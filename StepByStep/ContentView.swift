@@ -11,10 +11,20 @@ struct ContentView: View {
     
     @State private var healthStore = HealthStore()
     
+    private var steps: [Step] {
+        healthStore.steps.sorted { lhs, rhs in
+            lhs.date > rhs.date
+        }
+    }
+    
     var body: some View {
-        List(healthStore.steps) { step in
-            Text("\(step.count)")
-        }.task {
+        VStack {
+            if let step = steps.first {
+                TodayStepView(step: step)
+            }
+            StepListView(steps: Array(steps.dropFirst()))
+        }
+        .task {
             await healthStore.requestAuthorization()
             do {
                 try await healthStore.calculateSteps()
