@@ -57,7 +57,7 @@ struct ContentView: View {
                 case .list:
                     StepListView(steps: Array(steps.dropFirst()))
                 case .chart:
-                    Text("Chart View")
+                    StepsChartView(steps: steps)
                 }
                 
                 
